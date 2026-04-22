@@ -4,7 +4,7 @@ import { createLogger } from '@cbp/logging-sdk';
 import { SessionStore } from './sessionStore';
 import { issueToken, verifyToken } from './tokens';
 
-const log = createLogger({ name: 'session-manager' });
+const log = createLogger({ service: 'session-manager' });
 const store = new SessionStore();
 const SECRET = process.env.CBP_AUTH_SECRET ?? 'dev-stub-secret-do-not-use-in-prod';
 
