@@ -39,10 +39,8 @@ export function searchCustomers(all: Customer[], query: SearchQuery): SearchResu
     filtered = filtered.filter((c) => c.email.toLowerCase().endsWith(`@${domain}`));
   }
 
-  if (query.hasPhone === true) {
-    filtered = filtered.filter((c) => !!c.phone);
-  } else if (query.hasPhone === false) {
-    filtered = filtered.filter((c) => !c.phone);
+  if (query.hasPhone !== undefined) {
+    filtered = filtered.filter((c) => !!c.phone === query.hasPhone);
   }
 
   const total = filtered.length;
@@ -54,14 +52,4 @@ function clamp(n: number, min: number, max: number): number {
   if (n < min) return min;
   if (n > max) return max;
   return n;
-}
-
-export function sortByName(customers: Customer[]): Customer[] {
-  return [...customers].sort((a, b) => {
-    const aKey = `${a.lastName} ${a.firstName}`.toLowerCase();
-    const bKey = `${b.lastName} ${b.firstName}`.toLowerCase();
-    if (aKey < bKey) return -1;
-    if (aKey > bKey) return 1;
-    return 0;
-  });
 }

@@ -1,6 +1,4 @@
-import { Customer } from './types';
 import { logger } from './logger';
-import { maskedView, initials } from './masking';
 
 export type AuditAction = 'create' | 'update' | 'view' | 'preferences.update';
 
@@ -35,9 +33,4 @@ export function recordAudit(record: Omit<AuditRecord, 'id' | 'recordedAt'>): Aud
 
 export function listAudit(customerId: string): AuditRecord[] {
   return ring.filter((r) => r.customerId === customerId);
-}
-
-export function renderAuditLine(r: AuditRecord, subject: Customer): string {
-  const masked = maskedView(subject);
-  return `[${r.recordedAt}] ${r.actor} ${r.action} ${initials(subject)} <${masked.email}>`;
 }

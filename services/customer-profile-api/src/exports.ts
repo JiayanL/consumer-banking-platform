@@ -13,7 +13,7 @@ export function customersToCsv(customers: Customer[], opts: { maskPII?: boolean 
   lines.push(CSV_COLUMNS.join(','));
   for (const row of rows) {
     const cells = CSV_COLUMNS.map((col) => {
-      const v = (row as Record<string, unknown>)[col];
+      const v = (row as unknown as Record<string, unknown>)[col];
       if (v === undefined || v === null) return '';
       const s = String(v);
       if (s.includes(',') || s.includes('"') || s.includes('\n')) {
@@ -35,13 +35,4 @@ export function preferencesToCsv(prefs: CommunicationPreferences[]): string {
   return lines.join('\n');
 }
 
-export function summarise(customers: Customer[]): { total: number; withPhone: number; byDomain: Record<string, number> } {
-  const byDomain: Record<string, number> = {};
-  let withPhone = 0;
-  for (const c of customers) {
-    if (c.phone) withPhone += 1;
-    const domain = c.email.split('@')[1] ?? 'unknown';
-    byDomain[domain] = (byDomain[domain] ?? 0) + 1;
-  }
-  return { total: customers.length, withPhone, byDomain };
-}
+
