@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cbp-pii-utils"
+version = "0.5.0"
+description = "PII masking, hashing, and format validation helpers for consumer banking platform Python services."
+requires-python = ">=3.10"
+authors = [{ name = "Data Security", email = "data-security@bofa.internal" }]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "coverage[toml]>=7.4",
+    "pytest-cov>=4.1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.coverage.run]
+source = ["pii_utils"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true

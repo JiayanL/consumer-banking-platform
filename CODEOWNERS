@@ -1,0 +1,33 @@
+# CODEOWNERS for consumer-banking-platform
+#
+# The last matching pattern wins. Keep narrowly-scoped rules at the
+# bottom of the file. Team handles are GitHub teams in the @bofa org.
+
+*                                                       @bofa/platform-eng
+
+# --- services ---
+/services/account-service/                              @bofa/retail-accounts
+/services/transaction-processor/                        @bofa/payments-team
+/services/ledger-service/                               @bofa/payments-team @bofa/finance-systems
+/services/wire-transfer-service/                        @bofa/payments-team
+/services/auth-service/                                 @bofa/identity-platform
+/services/audit-logger/                                 @bofa/platform-security @bofa/compliance-eng
+/services/api-gateway/                                  @bofa/platform-eng
+/services/notification-service/                         @bofa/customer-comms
+/services/session-manager/                              @bofa/identity-platform
+/services/customer-profile-api/                         @bofa/retail-accounts
+/services/kyc-enrichment/                               @bofa/data-platform
+/services/reporting-aggregator/                         @bofa/finance-systems
+/services/pii-tokenization-service/                     @bofa/data-security
+
+# --- shared libraries ---
+/libs/common-auth/                                      @bofa/identity-platform @bofa/platform-security
+/libs/logging-sdk/                                      @bofa/platform-eng
+/libs/pii-utils/                                        @bofa/data-security
+
+# --- infra ---
+/.github/                                               @bofa/platform-eng
+/tools/                                                 @bofa/platform-eng
+
+# --- compliance-sensitive docs ---
+/COMPLIANCE.md                                          @bofa/compliance-eng @bofa/platform-security
