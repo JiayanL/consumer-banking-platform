@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: audit-logger
+  datasource:
+    url: jdbc:h2:mem:audit;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+server:
+  port: 8085

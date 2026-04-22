@@ -1,0 +1,36 @@
+name: reporting-aggregator
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'services/reporting-aggregator/**'
+      - 'libs/pii-utils/**'
+      - '.github/workflows/reporting-aggregator.yml'
+  pull_request:
+    paths:
+      - 'services/reporting-aggregator/**'
+      - 'libs/pii-utils/**'
+      - '.github/workflows/reporting-aggregator.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pii-utils
+        run: pip install -e libs/pii-utils
+      - name: Install reporting-aggregator (dev)
+        working-directory: services/reporting-aggregator
+        run: pip install -e ".[dev]"
+      - name: Test reporting-aggregator
+        working-directory: services/reporting-aggregator
+        run: pytest --cov --cov-report=xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-reporting-aggregator
+          path: services/reporting-aggregator/coverage.xml

@@ -1,0 +1,35 @@
+# Nightly snapshot of compliance-tagged coverage. Intended to feed the
+# downstream audit report. NOTE: the `publish` step is gated on a branch
+# we retired a while back (`compliance-reports`) — nothing has actually
+# published in a while. Leaving scheduled until the compliance team picks
+# a new destination.
+name: nightly-compliance-snapshot
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build coverage aggregate
+        run: |
+          pip install -e libs/pii-utils
+          python tools/aggregate_coverage.py --out nightly.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nightly-compliance
+          path: nightly.json
+
+  publish:
+    needs: snapshot
+    if: github.ref == 'refs/heads/compliance-reports'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "publish to compliance share (noop)"

@@ -1,0 +1,39 @@
+name: api-gateway
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'services/api-gateway/**'
+      - 'libs/logging-sdk/**'
+      - '.github/workflows/api-gateway.yml'
+  pull_request:
+    paths:
+      - 'services/api-gateway/**'
+      - 'libs/logging-sdk/**'
+      - '.github/workflows/api-gateway.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: services/api-gateway/package-lock.json
+      - name: Build logging-sdk
+        working-directory: libs/logging-sdk
+        run: npm install && npm run build
+      - name: Install api-gateway
+        working-directory: services/api-gateway
+        run: npm install
+      - name: Test api-gateway
+        working-directory: services/api-gateway
+        run: npm test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: istanbul-api-gateway
+          path: services/api-gateway/coverage/coverage-summary.json

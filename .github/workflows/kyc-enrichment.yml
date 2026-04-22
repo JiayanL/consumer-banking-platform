@@ -1,0 +1,36 @@
+name: kyc-enrichment
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'services/kyc-enrichment/**'
+      - 'libs/pii-utils/**'
+      - '.github/workflows/kyc-enrichment.yml'
+  pull_request:
+    paths:
+      - 'services/kyc-enrichment/**'
+      - 'libs/pii-utils/**'
+      - '.github/workflows/kyc-enrichment.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pii-utils
+        run: pip install -e libs/pii-utils
+      - name: Install kyc-enrichment (dev)
+        working-directory: services/kyc-enrichment
+        run: pip install -e ".[dev]"
+      - name: Test kyc-enrichment
+        working-directory: services/kyc-enrichment
+        run: pytest --cov --cov-report=xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-kyc-enrichment
+          path: services/kyc-enrichment/coverage.xml

@@ -1,0 +1,35 @@
+name: transaction-processor
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'services/transaction-processor/**'
+      - 'libs/common-auth/**'
+      - '.github/workflows/transaction-processor.yml'
+  pull_request:
+    paths:
+      - 'services/transaction-processor/**'
+      - 'libs/common-auth/**'
+      - '.github/workflows/transaction-processor.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - name: Build common-auth
+        run: mvn -f libs/common-auth/pom.xml -q install -DskipTests
+      - name: Test transaction-processor
+        run: mvn -f services/transaction-processor/pom.xml -q test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jacoco-transaction-processor
+          path: services/transaction-processor/target/site/jacoco/jacoco.xml
