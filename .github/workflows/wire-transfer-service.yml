@@ -28,9 +28,9 @@ jobs:
           java-version: '17'
           cache: maven
       - name: Build common-auth
-        run: mvn -pl libs/common-auth -am -q install -DskipTests
+        run: mvn -f libs/common-auth/pom.xml -q install -DskipTests
       - name: Test wire-transfer-service
-        run: mvn -pl services/wire-transfer-service -am -q test
+        run: mvn -f services/wire-transfer-service/pom.xml -q test
       - uses: actions/upload-artifact@v4
         if: always()
         with:

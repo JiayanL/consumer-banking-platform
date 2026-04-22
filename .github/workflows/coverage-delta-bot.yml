@@ -29,9 +29,9 @@ jobs:
 
       - name: Compute head coverage
         run: |
-          mvn -pl libs/common-auth -am -q install -DskipTests || true
+          mvn -f libs/common-auth/pom.xml -q install -DskipTests || true
           for s in account-service ledger-service auth-service wire-transfer-service transaction-processor audit-logger; do
-            mvn -pl services/$s -am -q test || true
+            mvn -f services/$s/pom.xml -q test || true
           done
           (cd libs/logging-sdk && npm install && npm run build) || true
           for s in notification-service customer-profile-api api-gateway session-manager; do
@@ -47,9 +47,9 @@ jobs:
         run: |
           git fetch origin ${{ github.base_ref }}
           git checkout origin/${{ github.base_ref }}
-          mvn -pl libs/common-auth -am -q install -DskipTests || true
+          mvn -f libs/common-auth/pom.xml -q install -DskipTests || true
           for s in account-service ledger-service auth-service wire-transfer-service transaction-processor audit-logger; do
-            mvn -pl services/$s -am -q test || true
+            mvn -f services/$s/pom.xml -q test || true
           done
           python tools/aggregate_coverage.py --out base.json || echo '{}' > base.json
           git checkout -
