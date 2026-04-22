@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pii-tokenization-service"
+version = "0.1.0"
+description = "Tokenize/detokenize PII via stubbed HSM."
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.110",
+    "uvicorn>=0.29",
+    "pydantic>=2.6",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

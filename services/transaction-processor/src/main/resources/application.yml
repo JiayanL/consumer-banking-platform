@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: transaction-processor
+  datasource:
+    url: jdbc:h2:mem:txn;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+
+server:
+  port: 8082
+
+logging:
+  level:
+    com.bofa.cbp.txn: INFO
