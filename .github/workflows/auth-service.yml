@@ -1,0 +1,35 @@
+name: auth-service
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'services/auth-service/**'
+      - 'libs/common-auth/**'
+      - '.github/workflows/auth-service.yml'
+  pull_request:
+    paths:
+      - 'services/auth-service/**'
+      - 'libs/common-auth/**'
+      - '.github/workflows/auth-service.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - name: Build common-auth
+        run: mvn -pl libs/common-auth -am -q install -DskipTests
+      - name: Test auth-service
+        run: mvn -pl services/auth-service -am -q test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jacoco-auth-service
+          path: services/auth-service/target/site/jacoco/jacoco.xml

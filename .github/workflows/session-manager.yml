@@ -1,0 +1,39 @@
+name: session-manager
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'services/session-manager/**'
+      - 'libs/logging-sdk/**'
+      - '.github/workflows/session-manager.yml'
+  pull_request:
+    paths:
+      - 'services/session-manager/**'
+      - 'libs/logging-sdk/**'
+      - '.github/workflows/session-manager.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: services/session-manager/package-lock.json
+      - name: Build logging-sdk
+        working-directory: libs/logging-sdk
+        run: npm install && npm run build
+      - name: Install session-manager
+        working-directory: services/session-manager
+        run: npm install
+      - name: Test session-manager
+        working-directory: services/session-manager
+        run: npm test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: istanbul-session-manager
+          path: services/session-manager/coverage/coverage-summary.json

@@ -1,0 +1,34 @@
+name: customer-profile-api
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'services/customer-profile-api/**'
+      - 'libs/logging-sdk/**'
+      - '.github/workflows/customer-profile-api.yml'
+  pull_request:
+    paths:
+      - 'services/customer-profile-api/**'
+      - 'libs/logging-sdk/**'
+      - '.github/workflows/customer-profile-api.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # NOTE: pinning to Node 18 until we finish validating the native assert
+      # output under Node 20. See PLAT-1842.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Build logging-sdk
+        working-directory: libs/logging-sdk
+        run: npm install && npm run build
+      - name: Install customer-profile-api
+        working-directory: services/customer-profile-api
+        run: npm install
+      - name: Test customer-profile-api
+        working-directory: services/customer-profile-api
+        run: npm test

@@ -1,0 +1,38 @@
+name: wire-transfer-service
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'services/wire-transfer-service/**'
+      - 'libs/common-auth/**'
+      - '.github/workflows/wire-transfer-service.yml'
+  pull_request:
+    paths:
+      - 'services/wire-transfer-service/**'
+      - 'libs/common-auth/**'
+      - '.github/workflows/wire-transfer-service.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # wire-transfer-service still runs on Spring Boot 2.7. JDK 17
+      # works because we're not using any Java 17-only library features;
+      # when the 3.x migration lands this step moves to JDK 21.
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - name: Build common-auth
+        run: mvn -pl libs/common-auth -am -q install -DskipTests
+      - name: Test wire-transfer-service
+        run: mvn -pl services/wire-transfer-service -am -q test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jacoco-wire-transfer-service
+          path: services/wire-transfer-service/target/site/jacoco/jacoco.xml

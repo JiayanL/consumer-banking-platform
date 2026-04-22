@@ -1,0 +1,11 @@
+{
+  "transaction-processor": ["TRANSACTION_INTEGRITY"],
+  "ledger-service": ["TRANSACTION_INTEGRITY"],
+  "wire-transfer-service": ["TRANSACTION_INTEGRITY"],
+  "auth-service": ["AUTHENTICATION"],
+  "session-manager": ["AUTHENTICATION"],
+  "audit-logger": ["AUDIT_TRAIL"],
+  "pii-tokenization-service": ["PII_HANDLING"],
+  "kyc-enrichment": ["PII_HANDLING"],
+  "reporting-aggregator": ["PII_HANDLING"]
+}
