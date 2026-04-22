@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reporting-aggregator"
+version = "0.1.0"
+description = "Daily and monthly aggregation reports over consumer transactions."
+requires-python = ">=3.11"
+authors = [{ name = "Platform Engineering", email = "platform-eng@bofa.internal" }]
+dependencies = [
+    "flask>=3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "coverage[toml]>=7.4",
+    "pytest-cov>=4.1",
+    "httpx>=0.26",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.coverage.run]
+source = ["reporting_aggregator"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
