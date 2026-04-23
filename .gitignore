@@ -1,6 +1,12 @@
 # --- demo notes (internal only) ---
 .demo-notes/
 
+# --- rollup.sh scratch artifacts ---
+.jest-results.json
+.pytest-junit.xml
+tools/coverage-aggregate.json
+tools/test-summary.json
+
 # --- Java / Maven ---
 target/
 *.class
