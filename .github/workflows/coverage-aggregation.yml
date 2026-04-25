@@ -44,9 +44,23 @@ jobs:
           done
 
       - name: Aggregate
-        run: python tools/aggregate_coverage.py
+        run: |
+          python tools/aggregate_coverage.py \
+            --out tools/coverage-aggregate.json \
+            --files-out tools/coverage-files.json
 
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-aggregate
-          path: tools/coverage-aggregate.json
+          path: |
+            tools/coverage-aggregate.json
+            tools/coverage-files.json
+
+      # Push the aggregate to coverage-dashboard. Skipped silently when the
+      # repo doesn't have COVERAGE_DASHBOARD_URL configured (e.g. on forks).
+      - name: Push to coverage-dashboard
+        if: vars.COVERAGE_DASHBOARD_URL != ''
+        env:
+          COVERAGE_DASHBOARD_URL: ${{ vars.COVERAGE_DASHBOARD_URL }}
+          COVERAGE_DASHBOARD_INGEST_TOKEN: ${{ secrets.COVERAGE_DASHBOARD_INGEST_TOKEN }}
+        run: python tools/post_to_dashboard.py
