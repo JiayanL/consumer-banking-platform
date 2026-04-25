@@ -53,6 +53,25 @@ Each service reports coverage in its native format (JaCoCo XML, Istanbul
 JSON, coverage.py XML). The aggregation tooling under `tools/` is still
 being built out.
 
+### One-shot roll-up
+
+`scripts/rollup.sh` builds the shared libs, runs every service's test
+suite, and prints a unified table of tests run / passed / failed /
+skipped plus coverage %. Overall coverage currently hovers around 30%
+(OCC gate is 70%).
+
+```
+bash scripts/rollup.sh               # full run (slow — builds everything)
+bash scripts/rollup.sh --skip-libs   # skip rebuilding shared libs
+bash scripts/rollup.sh --java        # only Java services
+bash scripts/rollup.sh --ts          # only TS services
+bash scripts/rollup.sh --py          # only Python services
+```
+
+Writes `tools/coverage-aggregate.json` (per-service + overall %) and
+`tools/test-summary.json` (per-service run/pass/fail/skipped counts).
+Both are gitignored — they're scratch artifacts.
+
 ## Contacts
 
 - Platform Engineering: `@bofa/platform-eng`
