@@ -31,7 +31,7 @@ for arg in "$@"; do
     --ts)   ONLY="ts" ;;
     --py)   ONLY="py" ;;
     -h|--help)
-      sed -n '2,15p' "$0"; exit 0 ;;
+      sed -n '2,18p' "$0"; exit 0 ;;
     *) echo "unknown arg: $arg" >&2; exit 2 ;;
   esac
 done
