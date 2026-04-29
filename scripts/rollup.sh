@@ -10,6 +10,7 @@
 #
 # Writes:
 #   tools/coverage-aggregate.json   (per-service + overall % from aggregate_coverage.py)
+#   tools/coverage-files.json       (per-file line coverage rows for every source file)
 #   tools/test-summary.json         (per-service tests run/passed/failed/skipped)
 #
 # A service that can't build counts as 1 "failed" row — the script does not
@@ -156,7 +157,8 @@ PY
 fi
 
 # ---------------- coverage roll-up ----------------
-python3 tools/aggregate_coverage.py --out tools/coverage-aggregate.json >/dev/null
+python3 tools/aggregate_coverage.py --out tools/coverage-aggregate.json \
+  --files-out tools/coverage-files.json >/dev/null
 
 # ---------------- print unified table ----------------
 python3 - <<'PY'
