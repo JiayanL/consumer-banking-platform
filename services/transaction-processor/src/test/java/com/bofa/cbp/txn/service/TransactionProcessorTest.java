@@ -71,7 +71,7 @@ class TransactionProcessorTest {
         assertEquals(42L, r.getTransactionId());
 
         BigDecimal balanceAfter = ledger.getBalance("ACC-0001");
-        assertEquals(balanceBefore.add(new BigDecimal("500.00")).compareTo(balanceAfter), 0);
+        assertEquals(0, balanceBefore.add(new BigDecimal("500.00")).compareTo(balanceAfter));
 
         verify(repo).save(argThat(t -> t.getType() == TransactionType.CREDIT));
     }
