@@ -17,6 +17,14 @@ describe('interpolate', () => {
   test('coerces non-string values', () => {
     expect(interpolate('n={{count}}', { count: 3 })).toBe('n=3');
   });
+
+  test('throws TypeError for non-string template', () => {
+    expect(() => interpolate(42 as any, {})).toThrow(TypeError);
+  });
+
+  test('null variable renders empty string', () => {
+    expect(interpolate('hi {{name}}', { name: null })).toBe('hi ');
+  });
 });
 
 describe('renderTemplate', () => {
@@ -26,5 +34,13 @@ describe('renderTemplate', () => {
       { name: 'Alan', bal: 100 },
     );
     expect(r).toEqual({ subject: 'Hi Alan', body: 'Balance: 100' });
+  });
+
+  test('returns empty subject when template has no subject', () => {
+    const r = renderTemplate(
+      { id: 't2', body: 'hello {{name}}' },
+      { name: 'Ada' },
+    );
+    expect(r).toEqual({ subject: '', body: 'hello Ada' });
   });
 });
