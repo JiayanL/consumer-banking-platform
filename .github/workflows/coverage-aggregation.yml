@@ -39,7 +39,7 @@ jobs:
       - name: Run all Python tests
         run: |
           pip install -e libs/pii-utils
-          for s in kyc-enrichment reporting-aggregator; do
+          for s in kyc-enrichment reporting-aggregator pii-tokenization-service; do
             (cd services/$s && pip install -e ".[dev]" && pytest --cov --cov-report=xml) || true
           done
 
